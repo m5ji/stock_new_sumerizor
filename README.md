@@ -1,1 +1,2 @@
-# stock_new_sumerizor
+# Stock News Summarizer
+Side Project
