@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    volumes:
+      - './backend:/usr/src/app'
+    environment:
+     - FLASK_APP=index.py
+     - APP_PORT=8002
+    ports:
+      - '8002:8002'
+  mysql:
+    image: percona:5.7-centos
+    container_name: mysql
+    command: --init-file /data/application/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=stock_news
+    volumes:
+        - './mysql/init.sql:/data/application/init.sql'
+    ports:
+      - '3307:3306'
