@@ -1,0 +1,15 @@
+pandas
+numpy
+networkx
+pyvis
+spacy
+matplotlib
+Flask
+jupyter
+mpld3
+flask-cors
+scipy
+sklearn
+dill
+runipy
+pymysql
