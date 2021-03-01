@@ -1,0 +1,38 @@
+{
+  "articles": [
+    {
+      "source": {
+        "id": "bloomberg",
+        "name": "Bloomberg"
+      },
+      "symbols": ["MSFT", "COTY"],
+      "title": "There Isn’t a Single Down Stock in the S&P Over Last 10 Weeks",
+      "content": "",
+      "description": "Here’s something to consider with the S&amp;P 500 on the verge of erasing all its 2020 losses: Ever since the benchmark bottomed in March, every single one of its members has posted a positive return.",
+      "url": "https://newsfilter.io/articles/there-isnt-a-single-down-stock-in-the-sp-over-last-10-weeks-25a5e721982ce5b75f340c2d30bc7bc3",
+      "imageUrl": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iFFvjKH9uTwE/v0/-1x-1.png",
+      "publishedAt": "2020-06-08T15:50:02Z",
+      "id": "25a5e721982ce5b75f340c2d30bc7bc3",
+      "industries": [
+        "Software - Infrastructure",
+        "Household & Personal Products"
+      ],
+      "sectors": ["Technology", "Consumer Defensive"]
+    },
+    {
+      "source": {
+        "id": "bloomberg",
+        "name": "Bloomberg"
+      },
+      "symbols": ["C"],
+      "title": "Citigroup Sees Illinois Bonds Already Pricing In Worst Outcome",
+      "description": "When it comes to Illinois bonds, Citigroup Inc. says the worst-case-scenario has already been priced in.",
+      "url": "https://newsfilter.io/articles/citigroup-sees-illinois-bonds-already-pricing-in-worst-outcome-65c8a53206ed9f030bd4cb18552bdaf0",
+      "imageUrl": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i4xxGH1AndIg/v2/-1x-1.png",
+      "publishedAt": "2020-06-08T15:50:02Z",
+      "id": "65c8a53206ed9f030bd4cb18552bdaf0",
+      "industries": ["Banks - Global"],
+      "sectors": ["Financial Services"]
+    }
+  ]
+}

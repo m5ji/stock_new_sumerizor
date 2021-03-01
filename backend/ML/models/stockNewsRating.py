@@ -14,7 +14,7 @@ from kafka import KafkaConsumer
 
 consumer = KafkaConsumer('stockNewsTitle', bootstrap_servers=['kafka:9092'])
 for message in consumer:
-    title = (message.value).decode("utf-8")
+    article = json.loads((message.value).decode("utf-8"))
 
     # If there's a GPU available...
     if torch.cuda.is_available():
@@ -38,8 +38,8 @@ for message in consumer:
         logits = outputs.logits
         return np.argmax(logits.detach().numpy(), axis=1)[0]
 
-    rate = get_text_sentiment(tokenizer,model,title)
-    print(rate, title)
+    rate = get_text_sentiment(tokenizer,model,article['title'])
+    print(rate, article['title'])
 #>>> 5
 
 #loop through a list:
@@ -47,7 +47,7 @@ for message in consumer:
 # data = json.load(f)
 #
 # for i in data['items']['result']:
-#     title = i['title']
-#     rate = get_text_sentiment(tokenizer,model,title)
+#     article = i['article']
+#     rate = get_text_sentiment(tokenizer,model,article)
 #     rate_list.append(rate)
-#     print(rate,title)
+#     print(rate,article)
