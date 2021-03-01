@@ -1,10 +1,13 @@
 from kafka import KafkaProducer
 from time import sleep
+import json
 
+with open('/usr/src/app/ML/files/newfilterMock.json') as f:
+  data = json.load(f)
 
 producer = KafkaProducer(bootstrap_servers='kafka:9092', api_version=(2,0,2))
-for e in range(1000):
-    data = {'number' : e}
-    producer.send('stockNewsTitle', b'Tesla Needs To Increase Production Now, Elon Musk Says In Leaked Email')
+for article in data['articles']:
+    print(article)
+    producer.send('stockNewsTitle', json.dumps(article).encode('utf-8'))
     sleep(5)
 
