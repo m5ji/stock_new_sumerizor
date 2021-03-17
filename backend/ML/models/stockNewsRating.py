@@ -11,11 +11,10 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import numpy as np
 from kafka import KafkaConsumer
 
+tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
 
-consumer = KafkaConsumer('stockNewsTitle', bootstrap_servers=['kafka:9092'])
-for message in consumer:
-    article = json.loads((message.value).decode("utf-8"))
-
+def getStockNewsTitleRating(self, article):
     # If there's a GPU available...
     if torch.cuda.is_available():
         device = torch.device("cuda")
@@ -25,21 +24,18 @@ for message in consumer:
         print('No GPU available, using the CPU instead.')
         device = torch.device("cpu")
 
-
-    tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-    model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-
-
-    def get_text_sentiment(tokenizer,model,text):
-        #This is the method that returns the prediction
+    def get_text_sentiment(tokenizer, model, text):
+        # This is the method that returns the prediction
         inputs = tokenizer(text, return_tensors="pt")
         outputs = model(**inputs)
         loss = outputs.loss
         logits = outputs.logits
-        return np.argmax(logits.detach().numpy(), axis=1)[0]
+        print(np.argsort(logits.detach().numpy(), axis=1)[0][::-1])
+        return np.argsort(logits.detach().numpy(), axis=1)[0]
 
-    rate = get_text_sentiment(tokenizer,model,article['title'])
-    print(rate, article['title'])
+    rate = get_text_sentiment(tokenizer, model, article['title'])
+    return rate, article['title']
+
 #>>> 5
 
 #loop through a list:

@@ -11,3 +11,6 @@ Flask==1.1.2
 jupyter==1.0.0
 flask-cors==3.0.10
 pymysql==1.0.2
+google-cloud-pubsub~=2.2.0
+grpcio==1.36.1
+google-auth==1.27.1
