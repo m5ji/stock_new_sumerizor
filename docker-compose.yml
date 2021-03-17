@@ -3,18 +3,17 @@ version: '3'
 services:
   backend:
     build:
-      context: .
-      dockerfile: ./backend/Dockerfile
-    volumes:
-      - './backend:/usr/src/app'
+      context: ./backend
+      dockerfile: ./Dockerfile
     environment:
-     - FLASK_APP=index.py
-     - APP_PORT=8002
+     - PUBSUB_EMULATOR_HOST=pubsub:8085
+     - PUBSUB_PROJECT_ID=stock-news-summarizer
+     - GOOGLE_APPLICATION_CREDENTIALS=stock-news-summarizer-2dd608c469eb.json
+     - PUBSUB_VERIFICATION_TOKEN=stocknewsummarizertoken
     ports:
       - '8002:8002'
   mysql:
     image: percona:5.7-centos
-    container_name: mysql
     command: --init-file /data/application/init.sql
     environment:
       - MYSQL_ROOT_PASSWORD=rootpassword
@@ -23,19 +22,9 @@ services:
         - './mysql/init.sql:/data/application/init.sql'
     ports:
       - '3307:3306'
-  kafka:
-    image: wurstmeister/kafka:latest
-    container_name: kafka
-    environment:
-      - KAFKA_ADVERTISED_HOST_NAME=kafka
-      - KAFKA_ADVERTISED_PORT=9092
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
-      - KAFKA_CREATE_TOPICS=StockNewsTopic:1:1
+  pubsub:
+    build:
+      context: ./pubsub
+      dockerfile: ./Dockerfile
     ports:
-      - '29092:29092'
-  zookeeper:
-    image: wurstmeister/zookeeper:latest
-    container_name: zookeeper
-    ports:
-      - '2181:2181'
+      - "8085:8085"
