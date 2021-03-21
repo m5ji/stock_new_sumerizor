@@ -9,12 +9,11 @@ import pandas as pd
 from tqdm.notebook import tqdm
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import numpy as np
-from kafka import KafkaConsumer
 
 tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
 model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
 
-def getStockNewsTitleRating(self, article):
+def getStockNewsTitleRating(article):
     # If there's a GPU available...
     if torch.cuda.is_available():
         device = torch.device("cuda")
@@ -34,7 +33,10 @@ def getStockNewsTitleRating(self, article):
         return np.argsort(logits.detach().numpy(), axis=1)[0]
 
     rate = get_text_sentiment(tokenizer, model, article['title'])
-    return rate, article['title']
+    return {
+        'rate': rate,
+        'title': article['title']
+    }
 
 #>>> 5
 

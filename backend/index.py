@@ -5,7 +5,7 @@ import json
 from google.cloud import pubsub_v1
 from flask import Flask, current_app, escape, request, jsonify
 from flask_cors import CORS, cross_origin
-#from ML.models.stockNewsRating import getStockNewsTitleRating
+from ML.models.stockNewsRating import getStockNewsTitleRating
 
 
 app = Flask(__name__)
@@ -14,6 +14,7 @@ app.config['PUBSUB_VERIFICATION_TOKEN'] = os.environ['PUBSUB_VERIFICATION_TOKEN'
 cors = CORS(app)
 app.config['MESSAGES'] = []
 
+
 @app.route('/hello', methods=['GET'])
 @cross_origin()
 def hello():
@@ -21,14 +22,17 @@ def hello():
         'result': f'Hello, {escape(app.config["MESSAGES"])}!'
     }
 
+
 @app.route('/generate-stock-news-rating', methods=['POST'])
 def generateStockNewsRating():
     envelope = json.loads(request.data.decode('utf-8'))
-    payload = base64.b64decode(envelope['message']['data'])
+    article = base64.b64decode(envelope['message']['data']).decode("utf-8")
+    article = json.loads(article)
+    results = getStockNewsTitleRating(article)
+    app.logger.info(f"{results['rate']}: {results['title']}")
 
-    app.config['MESSAGES'].append(payload)
-    app.logger.info(f"Received {payload}.")
-    return 'OK', 200
+    return "OK", 200
+
 
 @app.route('/create-stock-news-title-subscription', methods=['GET'])
 def createStockNewsTitleSubscription():
@@ -61,12 +65,6 @@ def createStockNewsTitleSubscription():
 
     # Returning any 2xx status indicates successful receipt of the message.
     return 'OK', 200
-
-    if isinstance(pubsub_message, dict) and "data" in pubsub_message:
-        article = base64.b64decode(pubsub_message["data"]).decode("utf-8").strip()
-        results = getStockNewsTitleRating(article)
-
-    return jsonify(results)
 
 
 @app.route('/post-stock-news-title', methods=['POST'])
