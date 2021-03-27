@@ -11,3 +11,6 @@ Flask
 jupyter
 flask-cors
 pymysql
+google-cloud-pubsub
+grpcio
+google-auth
