@@ -8,9 +8,9 @@ COPY doit.sh stable-req.txt /
 RUN sh doit.sh init
 
 # Bundle app source
+ADD . /usr/src/app
 WORKDIR /usr/src/app
 ENV PYTHONPATH "${PYTHONPATH}:/usr/src/app"
-
 
 EXPOSE 8002
 
