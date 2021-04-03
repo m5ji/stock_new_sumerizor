@@ -7,9 +7,8 @@ services:
       dockerfile: ./Dockerfile
     environment:
      - PUBSUB_EMULATOR_HOST=pubsub:8085
-     - PUBSUB_PROJECT_ID=stock-news-summarizer
+     - HOST=http://backend:8002
      - GOOGLE_APPLICATION_CREDENTIALS=stock-news-summarizer-2dd608c469eb.json
-     - PUBSUB_VERIFICATION_TOKEN=stocknewsummarizertoken
     ports:
       - '8002:8002'
   mysql:

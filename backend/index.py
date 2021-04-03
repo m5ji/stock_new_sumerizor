@@ -39,7 +39,7 @@ def createStockNewsTitleSubscription():
     projectId = request.args.get("projectId", "stock-news-summarizer")
     topicId = request.args.get("topicId", "stockNewsTitle")
     subscriptionId = request.args.get("subscriptionId", "stockNewsTitleSubscription")
-    endpoint = "http://backend:8002/generate-stock-news-rating"
+    endpoint = f"{os.environ['HOST']}/generate-stock-news-rating"
     timeout = 5.0
 
     publisher = pubsub_v1.PublisherClient()
