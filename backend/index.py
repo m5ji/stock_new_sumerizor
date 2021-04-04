@@ -6,6 +6,7 @@ from google.cloud import pubsub_v1
 from flask import Flask, current_app, escape, request, jsonify
 from flask_cors import CORS, cross_origin
 from ML.models.stockNewsRating import getStockNewsTitleRating
+import grpc
 
 
 app = Flask(__name__)
@@ -52,13 +53,21 @@ def createStockNewsTitleSubscription():
     # Wrap the subscriber in a 'with' block to automatically call close() to
     # close the underlying gRPC channel when done.
     with subscriber:
-        subscription = subscriber.create_subscription(
-            request={
-                "name": subscription_path,
-                "topic": topic_path,
-                "push_config": push_config,
-            }
-        )
+        try:
+            subscription = subscriber.create_subscription(
+                request={
+                    "name": subscription_path,
+                    "topic": topic_path,
+                    "push_config": push_config,
+                }
+            )
+        except Exception:
+            subscription = subscriber.get_subscription(
+                request={
+                    "subscription": subscription_path,
+                }
+            )
+
 
     app.logger.info(f"Push subscription created: {subscription}.")
     app.logger.info(f"Endpoint for subscription is: {endpoint}")
@@ -78,8 +87,8 @@ def postStockNewsTitle():
     app.logger.info(topic_path)
     try:
         publisher.create_topic(request={"name": topic_path})
-    except Exception:
-        app.logger.error('Couldnt create a topic')
+    except Exception as e:
+        app.logger.error(e)
 
     with open('/usr/src/app/ML/files/newfilterMock.json') as f:
         data = json.load(f)
