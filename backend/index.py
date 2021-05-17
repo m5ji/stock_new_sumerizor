@@ -7,6 +7,17 @@ from flask import Flask, current_app, escape, request, jsonify
 from flask_cors import CORS, cross_origin
 from ML.models.stockNewsRating import getStockNewsTitleRating
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+# Use the application default credentials
+cred = credentials.ApplicationDefault()
+firebase_admin.initialize_app(cred, {
+  'projectId': "stock-news-summarizer",
+})
+
+db = firestore.client()
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -18,8 +29,13 @@ app.config['MESSAGES'] = []
 @app.route('/hello', methods=['GET'])
 @cross_origin()
 def hello():
+    docs = db.collection(u'users').stream()
+    results = []
+    for doc in docs:
+        results.append(doc.to_dict())
+    print(results)
     return {
-        'result': f'Hello, {escape(app.config["MESSAGES"])}!'
+        'result': f'Hello, {results}!'
     }
 
 

@@ -14,3 +14,4 @@ pymysql
 google-cloud-pubsub
 grpcio
 google-auth
+firebase_admin
