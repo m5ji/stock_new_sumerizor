@@ -48,8 +48,8 @@ def generateStockNewsRating():
     results = getStockNewsTitleRating(article)
     docs = db.collection(u'users').stream()
     for doc in docs:
-        app.logger.info(doc.to_dict())
-        sendPushMessage((doc.to_dict())['token'], f"{results['rate']}: {results['title']}")
+        app.logger.info(results)
+        sendPushMessage((doc.to_dict())['token'], results['title'], results)
 
     return "OK", 200
 
