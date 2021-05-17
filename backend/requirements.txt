@@ -15,3 +15,4 @@ google-cloud-pubsub
 grpcio
 google-auth
 firebase_admin
+exponent_server_sdk
