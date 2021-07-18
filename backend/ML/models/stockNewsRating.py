@@ -30,12 +30,13 @@ def getStockNewsTitleRating(article):
         loss = outputs.loss
         logits = outputs.logits
         print(np.argsort(logits.detach().numpy(), axis=1)[0][::-1])
-        return np.argsort(logits.detach().numpy(), axis=1)[0]
+        return np.argmax(logits.detach().numpy(), axis=1)[0]
 
     rate = get_text_sentiment(tokenizer, model, article['title'])
     return {
-        'rate': rate,
-        'title': article['title']
+        'rate': int(rate),
+        'title': article['title'],
+        'url': article['url']
     }
 
 #>>> 5

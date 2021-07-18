@@ -6,6 +6,7 @@ from google.cloud import pubsub_v1
 from flask import Flask, current_app, escape, request, jsonify
 from flask_cors import CORS, cross_origin
 from ML.models.stockNewsRating import getStockNewsTitleRating
+from Services.sendPushNotificationService import sendPushMessage
 
 import firebase_admin
 from firebase_admin import credentials
@@ -45,7 +46,10 @@ def generateStockNewsRating():
     article = base64.b64decode(envelope['message']['data']).decode("utf-8")
     article = json.loads(article)
     results = getStockNewsTitleRating(article)
-    app.logger.info(f"{results['rate']}: {results['title']}")
+    docs = db.collection(u'users').stream()
+    for doc in docs:
+        app.logger.info(results)
+        sendPushMessage((doc.to_dict())['token'], results['title'], results)
 
     return "OK", 200
 
