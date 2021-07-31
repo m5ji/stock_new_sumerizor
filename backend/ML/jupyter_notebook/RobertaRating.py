@@ -37,7 +37,7 @@ tokenizer = AutoTokenizer.from_pretrained("siebert/sentiment-roberta-large-engli
 model = AutoModelForSequenceClassification.from_pretrained("siebert/sentiment-roberta-large-english")
 
 
-text = "Good night 😊"
+text = "Good night"
 text = preprocess(text)
 encoded_input = tokenizer(text, return_tensors='pt')
 output = model(**encoded_input)
